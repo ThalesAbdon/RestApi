@@ -1,19 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from '../repositories/user.repository';
-import { User } from '../database/model/user.model';
+import { UserRepository } from '../../repositories/users/user.repository';
+import { User } from '../../database/model/user.model';
+import { UserEntity } from 'src/domain/users/entity/user.entity';
 
 @Injectable()
-export class UserService {
+export class UserPersistenceService {
   constructor(
     @Inject(UserRepository) private readonly userRepository: UserRepository,
   ) {}
 
   async create(data: User) {
     await this.userRepository.create(data);
-  }
-
-  async get() {
-    return await this.userRepository.get();
   }
 
   async update(_id: string, data: Partial<User>) {
@@ -23,7 +20,4 @@ export class UserService {
     await this.userRepository.delete(_id);
   }
 
-  async getUser(_id: string) {
-    return await this.userRepository.getUser(_id);
-  }
 }

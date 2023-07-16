@@ -4,9 +4,9 @@ import { UserEntity } from '../entity/user.entity';
 import { UserPersistenceService } from 'src/infrastructure/services/users/user.persistence.service';
 
 @Injectable()
-export class CreateUserUseCase implements IUsecase<UserEntity, void> {
+export class UpdateUserUseCase implements IUsecase<Partial<UserEntity>, void> {
   constructor(@Inject(UserPersistenceService) private readonly userService: UserPersistenceService) {}
-  async execute(data: UserEntity): Promise<void> {
-    await this.userService.create(data);
+  async execute({id,...data}: Partial<UserEntity>): Promise<void> {
+    await this.userService.update(id ,data);
   }
 }

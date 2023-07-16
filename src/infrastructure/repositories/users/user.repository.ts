@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../database/model/user.model';
+import { User, UserDocument } from '../../database/model/user.model';
 import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class UserRepository {
-  constructor(private readonly userModel: Model<User>) {}
+  constructor(@InjectModel(User.name) private readonly userModel: Model<UserDocument>) {}
 
   async create(data: User) {
     const userData = await this.userModel.create(data);
@@ -16,7 +17,7 @@ export class UserRepository {
   }
 
   async update(_id: string, data: Partial<User>) {
-    await this.userModel.updateOne({ _id }, { data });
+    await this.userModel.updateOne({ _id }, {$set: {...data}});
   }
   async delete(_id: string) {
     await this.userModel.deleteOne({ _id });

@@ -4,9 +4,9 @@ import { UserEntity } from '../entity/user.entity';
 import { UserPersistenceService } from 'src/infrastructure/services/users/user.persistence.service';
 
 @Injectable()
-export class CreateUserUseCase implements IUsecase<UserEntity, void> {
+export class DeleteUserUseCase implements IUsecase<Pick<UserEntity, 'id'>, void> {
   constructor(@Inject(UserPersistenceService) private readonly userService: UserPersistenceService) {}
-  async execute(data: UserEntity): Promise<void> {
-    await this.userService.create(data);
+  async execute({id}: Pick<UserEntity, 'id'>): Promise<void> {
+    await this.userService.delete(id);
   }
 }
